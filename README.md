@@ -1,77 +1,50 @@
-# AI Experts Assignment (Python)
+# AI Experts Assignment 3 Solution
 
-This assignment evaluates your ability to:
+This repository contains my completed solution for the Python AI Experts Assignment.
 
-- set up a small Python project to run reliably (locally + in Docker),
-- pin dependencies for reproducible installs,
-- write focused tests to reproduce a bug,
-- implement a minimal, reviewable fix.
-
-## What you will do
-
-### 1) Dockerfile (required)
-
-Create a `Dockerfile` so the project can run the test suite in a non-interactive, CI-style environment.
-
-Requirements:
-
-- requirements.txt exists and is used during build (pip install -r requirements.txt)
-- pytest must be included/pinned in requirements.txt
-- The image must run tests by default (use: `CMD ["python", "-m", "pytest", "-v"]`).
-- The build must install dependencies from `requirements.txt`.
-
-### 2) requirements.txt (required)
-
-Create a `requirements.txt` with pinned versions, using this format:
-
-- `package==x.y.z`
-
-### 3) README updates (required)
-
-Update this README to include:
-
-- how to run the tests locally,
-- how to build and run tests with Docker.
+## Overview of Changes
+- **Bug Fix:** Identified and fixed a bug in `app/http_client.py` where the API request failed to refresh standard tokens properly when non-OAuth2Token objects were present. Details can be found in `EXPLANATION.md`.
+- **Dependency Management:** Completely pinned all required dependencies and sub-dependencies in `requirements.txt` to ensure perfectly reproducible builds across environments.
+- **Dockerization:** Created a minimal `Dockerfile` designed to execute the test suite reliably in a CI-style, non-interactive environment.
 
 ## Running the Tests
 
-### Locally
+You can run the full test suite either directly on your local machine or fully isolated inside a Docker container.
 
-Ensure you have a virtual environment set up with Python.
-1. Install dependencies: `pip install -r requirements.txt`
-2. Run tests: `pytest -v`
+### Local Environment execution
 
-### With Docker
+To run the app directly, you should first ensure you have Python 3.11+ installed. I highly recommend running this within an isolated virtual environment.
 
-1. Build the Docker image: `docker build -t app-tests .`
-2. Run the tests in the container: `docker run --rm app-tests`
+1. Create and activate a Virtual Environment (Optional, but recommended)
+   ```bash
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+   
+   # Linux/Mac
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+2. Install the necessary dependencies cleanly:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the automated Pytest suite:
+   ```bash
+   pytest -v
+   ```
 
-### 4) Find + fix a bug (required)
+### Running with Docker
 
-There is a bug somewhere in this repository.
+You do not need Python or a virtual environment installed natively if you choose to run the tests in Docker. It will automatically build an isolated image with the required dependencies and run the tests.
 
-Your tasks:
+1. Build the Docker image locally (this will also install dependencies automatically):
+   ```bash
+   docker build -t app-tests .
+   ```
+2. Run the newly created image container:
+   ```bash
+   docker run --rm app-tests
+   ```
 
-- Identify the bug.
-- Apply the smallest possible fix to make the tests pass.
-- Keep the change minimal and reviewable (no refactors).
-
-## Constraints
-
-- Keep changes minimal and reviewable.
-- Do not refactor unrelated code.
-- Do not introduce extra tooling unless required.
-- You may add tests and the smallest code change needed to fix the bug.
-
-### 5) EXPLANATION.md (required)
-
-Create `EXPLANATION.md` (max 250 words) containing:
-
-- **What was the bug?**
-- **Why did it happen?**
-- **Why does your fix solve it?**
-- **One realistic case / edge case your tests still don’t cover**
-
-## Submission
-
-- Submit a public GitHub repository URL containing your solution to the Google form link provided.
+*(Note: using `--rm` ensures the container automatically cleans up after finishing the test suite)*
